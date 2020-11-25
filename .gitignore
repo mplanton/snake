@@ -1,0 +1,5 @@
+# ignore the following files
+
+main
+*.o
+*.h.gch
