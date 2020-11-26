@@ -4,7 +4,7 @@
 #include "Thing.h"
 #include "Body.h"
 
-class Snake:
+class Snake
 {
 private:
     std::vector<Body> _tail;
@@ -17,20 +17,12 @@ public:
         MOVES       // nothing happened, the snake just moved
     };
 
-    enum Direction
-    {
-        UP,
-        DOWN,
-        RIGHT,
-        LEFT
-    };
-
     // Constructor
     //
     // position: starting position of the snake on the map
     // direction: starting direction of the snake
     //
-    Snake(Coord position, Direction direction);
+    Snake(Coord position, Coord direction);
 
     // Move method of the Snake
     //
@@ -43,7 +35,7 @@ public:
     //
     // Change the current direction of the snake
     //
-    void changeDirection(Direction direction);
+    void changeDirection(Coord direction);
 
     // Return the coordinates of the snakes head
     //
@@ -62,6 +54,6 @@ public:
 
     // part of move()
     bool collisionDetect();
-}
+};
 
 #endif // SNAKE_H

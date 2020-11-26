@@ -23,7 +23,7 @@ public:
     // return true if possibe and false, if not.
     bool add(Thing thing, Coord position); 
     
-    // Remove Thing from the Map at the given coordinate.
+    // Remove a Thing from the Map at the given coordinate.
     // Return the removed thing.
     Thing remove(Coord position);
 

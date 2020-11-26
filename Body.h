@@ -6,8 +6,8 @@
 class Body : public Thing
 {
 private:
+    Coord _position;
     Coord _direction;
-    Coord _pos;
 public:
     enum Type
     {
@@ -15,7 +15,8 @@ public:
         TAIL
     };
 
-    Body(Type type) : Thing(BODY)
+    Body(Type type, Coord position, Coord direction) :
+         Thing(BODY), _position{position}, _direction{direction}
     {
         switch(type)
         {
@@ -31,6 +32,9 @@ public:
     // Get and set direction
     Coord get_dir() {return _direction;}
     void  set_dir(Coord direction) {_direction = direction;}
+    // Get and set position
+    Coord get_pos() {return _position;}
+    void  set_pos(Coord direction) {_direction = direction;}
 };
 
 #endif // BODY_H

@@ -9,6 +9,8 @@
 #include "Air.h"
 #include "Border.h"
 #include "Body.h"
+#include "Snake.h"
+
 
 /*
  * Thing subclasses
@@ -55,20 +57,58 @@ int main()
 //        map.add(rand_thing, rand_pos);
 //    }
         
-    Map map(20, 10);
+    const int size_x = 20;
+    const int size_y = 10;
+    Map map(size_x, size_y);
     Snake::Action action;
  
     // TODO: Game must build the map
 
+    // corners
+    map.add(Border(Border::CORNER), Coord(0, 0));
+    map.add(Border(Border::CORNER), Coord(0, size_y-1));
+    map.add(Border(Border::CORNER), Coord(size_x-1, 0));
+    map.add(Border(Border::CORNER), Coord(size_x-1, size_y-1));
+    
+
+    // horizontal walls
+    for(int x = 1; x < size_x-1; x++)
+    {
+        // top
+        map.add(Border(Border::HORIZONTAL), Coord(x, 0));
+        // bottom
+        map.add(Border(Border::HORIZONTAL), Coord(x, size_y-1));
+    }
+
+
+    // vertical walls
+    for(int y = 1; y < size_y-1; y++)
+    {
+        // left
+        map.add(Border(Border::VERTICAL), Coord(0, y));
+        // right
+        map.add(Border(Border::VERTICAL), Coord(size_x-1, y));
+    }
+    
+    // put Food at a random position
+    auto rand = Random();
+    map.add(Food(), rand.get_coord(1, size_x-1, 1, size_y-1));
+
     std::cout << map.render();
 
-    Snake snake(Coord(5, 5), Snake::DOWN);
+    Coord aa = Coord(1, 2);
+    Coord bb = Coord(1, 1);
+    std::cout << "DBG: aa: " << aa << " bb: " << bb << std::endl;
+    std::cout << "aa + bb: " << aa+bb << " aa - bb: " << aa-bb << std::endl;
 
-    std::cout << map.render(&snake);
+    // TODO: Later define a Direction class, which inherits from Coord
+    //Snake snake(Coord(5, 5), Coord(-1, 0));
 
-    snake.move(Snake::UP);
+    //std::cout << map.render(&snake);
 
-    std::cout << map.render(&snake);
+    //snake.move(Snake::UP);
+
+    //std::cout << map.render(&snake);
 
     return 0;
 }
