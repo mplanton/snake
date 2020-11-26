@@ -1,21 +1,18 @@
 // Snake.h
 #ifndef SNAKE_H
 #define SNAKE_H
+#include<vector>
+#include "Coord.h"
 #include "Thing.h"
 #include "Body.h"
 
 class Snake
 {
 private:
+    // This includes head and tail -> maybe change this name later...
     std::vector<Body> _tail;
 
 public:
-    enum Action
-    {
-        EATS,       // the snake found food and grows
-        COLLIDES,   // the snake collided with a border or itself 
-        MOVES       // nothing happened, the snake just moved
-    };
 
     // Constructor
     //
@@ -26,10 +23,9 @@ public:
 
     // Move method of the Snake
     //
-    // This moves the snake in the current direction and returns
-    // the Action of the snake.
+    // This moves the snake in the current direction
     //
-    Action move();
+    void move();
     
     // Steering of the snake
     //
@@ -41,19 +37,15 @@ public:
     //
     Coord getHeadCoord();
 
+    // Print the coordinates of the whole snake
+    //
+    void printCoords();
+
     // Return a reference of the snakes body for rendering
     //
     std::vector<Body>& getBody();
 
-
-    // TODO: Make these methods private later on
-    // But now we need them for testing
-
-    // part of move()
     void grow();
-
-    // part of move()
-    bool collisionDetect();
 };
 
 #endif // SNAKE_H

@@ -34,7 +34,7 @@ public:
     void  set_dir(Coord direction) {_direction = direction;}
     // Get and set position
     Coord get_pos() {return _position;}
-    void  set_pos(Coord direction) {_direction = direction;}
+    void  set_pos(Coord position) {_position = position;}
 };
 
 #endif // BODY_H

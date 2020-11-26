@@ -24,45 +24,11 @@
 
 int main()
 {
-    Food a;
-
-    std::cout << " a char: " << a.get_char() << std::endl;
-
-//    Food b;
-//    Map map(10, 5);
-//    map.add(a, Coord(0, 0));
-//    map.add(b, Coord(4, 3));
-//    map.add(Food(), Coord(9, 4));
-//    map.add(Food(), Coord(0, 4));
-//    map.add(Body(Body::HEAD), Coord(3, 3));
-//    map.add(Body(Body::TAIL), Coord(3, 4));
-//
-//    map.add(Border(Border::HORIZONTAL), Coord(2, 3));
-//    map.add(Border(Border::VERTICAL), Coord(0, 1));
-//    map.add(Border(Border::CORNER), Coord(0, 2));
-
-//    Map map(40, 20);
-//    auto size = map.get_size();
-//    // Now put random things into the map
-//    auto n_things = 15;
-//    for(int i = 0; i < n_things; i++)
-//    {
-//        auto x = rand.get_int(0, size.get_x());
-//        auto y = rand.get_int(0, size.get_y());
-//        auto rand_pos = Coord(x, y);
-//
-//        auto c = rand.get_char('a', 'z');
-//        auto rand_thing = Thing(c);
-//
-//        map.add(rand_thing, rand_pos);
-//    }
-        
     const int size_x = 20;
     const int size_y = 10;
     Map map(size_x, size_y);
-    Snake::Action action;
  
-    // TODO: Game must build the map
+    // Game builds the map TODO: put this in Game class
 
     // corners
     map.add(Border(Border::CORNER), Coord(0, 0));
@@ -94,21 +60,70 @@ int main()
     auto rand = Random();
     map.add(Food(), rand.get_coord(1, size_x-1, 1, size_y-1));
 
-    std::cout << map.render();
+    // Make a copy of the original map for snake rendering
+    Map smap = map;
 
-    Coord aa = Coord(1, 2);
-    Coord bb = Coord(1, 1);
-    std::cout << "DBG: aa: " << aa << " bb: " << bb << std::endl;
-    std::cout << "aa + bb: " << aa+bb << " aa - bb: " << aa-bb << std::endl;
 
-    // TODO: Later define a Direction class, which inherits from Coord
-    //Snake snake(Coord(5, 5), Coord(-1, 0));
 
-    //std::cout << map.render(&snake);
+    // empty map rendering
+    std::cout << smap.render();
 
-    //snake.move(Snake::UP);
+    // Initialize Snake with direction LEFT and render
+    // TODO: Later define a Direction class, which inherits from Coord?
+    Snake snake = Snake(Coord(5, 5), Coord(-1, 0));
+    snake.printCoords();
+    // put the Snake on the Map
+    // TODO: Do we have to put the snake on the Map?
+    // Yes, if we can't choose cursor position
+    // No, if we can put it on top of the map afterwards
+    for(auto part : snake.getBody())
+    {
+        bool flag = smap.add(part, part.get_pos());
+        std::cout << "DBG: smap.add was: " << flag << std::endl;
+        std::cout << "DBG: part: " << part.get_char() << part.get_pos()
+                  << std::endl;
+    }
+    std::cout << smap.render();
 
-    //std::cout << map.render(&snake);
+    // move one step (left)
+    snake.move();
+    snake.printCoords();
+    smap = map;
+    for(auto part : snake.getBody()) // put the Snake on the Map
+    {
+        bool flag = smap.add(part, part.get_pos());
+        std::cout << "DBG: smap.add was: " << flag << std::endl;
+        std::cout << "DBG: part: " << part.get_char() << part.get_pos()
+                  << std::endl;
+    }
+    std::cout << smap.render();
+
+    // make a turn from left to up
+    snake.changeDirection(Coord(0, -1));
+    snake.move();
+    smap = map;
+    for(auto part : snake.getBody()) // put the Snake on the Map
+    {
+        bool flag = smap.add(part, part.get_pos());
+        std::cout << "DBG: smap.add was: " << flag << std::endl;
+        std::cout << "DBG: part: " << part.get_char() << part.get_pos()
+                  << std::endl;
+    }
+    std::cout << smap.render();
+
+    // grow and move
+    snake.grow();
+    snake.move();
+    smap = map;
+    for(auto part : snake.getBody()) // put the Snake on the Map
+    {
+        bool flag = smap.add(part, part.get_pos());
+        std::cout << "DBG: smap.add was: " << flag << std::endl;
+        std::cout << "DBG: part: " << part.get_char() << part.get_pos()
+                  << std::endl;
+    }
+    std::cout << smap.render();
+
 
     return 0;
 }

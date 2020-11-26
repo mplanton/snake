@@ -2,10 +2,10 @@
 
 all: main
 
-main: main.o Coord.o Thing.o Random.o Map.o
-	g++ -g -Wall -o main main.o Coord.o Thing.o Random.o Map.o
+main: main.o Coord.o Thing.o Random.o Map.o Snake.o
+	g++ -g -Wall -o main main.o Coord.o Thing.o Random.o Map.o Snake.o
 
-main.o: main.cpp Coord.h Thing.h Random.h Map.h Food.h Border.h Body.h
+main.o: main.cpp Coord.h Thing.h Random.h Map.h Food.h Border.h Body.h Snake.h
 	g++ -g -Wall -c main.cpp
 
 Coord.o: Coord.cpp Coord.h
@@ -19,6 +19,9 @@ Random.o: Random.cpp Random.h
 
 Map.o: Map.cpp Map.h
 	g++ -g -Wall -c Map.cpp
+
+Snake.o: Snake.cpp Snake.h
+	g++ -g -Wall -c Snake.cpp
 
 clean:
 	rm -f main *.o *.h.gch
