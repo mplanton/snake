@@ -3,70 +3,42 @@
 #include<vector>
 #include "Coord.h"
 #include "Thing.h"
-#include "Random.h"
 #include "Map.h"
-#include "Food.h"
 #include "Air.h"
-#include "Border.h"
 #include "Body.h"
 #include "Snake.h"
+#include "Game.h"
 
-
-/*
- * Thing subclasses
- *    - Border: 
- *        * Corner: +, Wall: horizontal - und vertikal |
- *    - Food: o
- *    - Body:
- *        * Head: @
- *        * Tail: #
-*/
 
 int main()
 {
-    const int size_x = 20;
-    const int size_y = 10;
-    Map map(size_x, size_y);
- 
-    // Game builds the map TODO: put this in Game class
+    auto map_size = Coord(20, 10);
+    auto snake_pos = Coord(12, 5);
+    auto snake_dir = Coord(1, 0);
+    Game game(map_size, snake_pos, snake_dir);
 
-    // corners
-    map.add(Border(Border::CORNER), Coord(0, 0));
-    map.add(Border(Border::CORNER), Coord(0, size_y-1));
-    map.add(Border(Border::CORNER), Coord(size_x-1, 0));
-    map.add(Border(Border::CORNER), Coord(size_x-1, size_y-1));
-    
+    game.tick();
+    game.putFood(snake_pos + Coord(2, 0));
+    game.tick();
+    game.putFood(snake_pos + Coord(6, 0));
+    game.putFood(snake_pos + Coord(5, 0));
+    game.tick();
+    game.tick();
+    game.tick();
+    game.tick();
+    game.direct(Coord(0, -1));
+    game.tick();
+    std::cout << game.tick() << std::endl;
+    std::cout << game.tick() << std::endl;
+    std::cout << game.tick() << std::endl;
+    game.direct(Coord(-1, 0));
+    std::cout << game.tick() << std::endl;
+    game.direct(Coord(0, 1));
+    std::cout << game.tick() << std::endl;
+    game.direct(Coord(1, 0));
+    std::cout << game.tick() << std::endl;
+/*
 
-    // horizontal walls
-    for(int x = 1; x < size_x-1; x++)
-    {
-        // top
-        map.add(Border(Border::HORIZONTAL), Coord(x, 0));
-        // bottom
-        map.add(Border(Border::HORIZONTAL), Coord(x, size_y-1));
-    }
-
-
-    // vertical walls
-    for(int y = 1; y < size_y-1; y++)
-    {
-        // left
-        map.add(Border(Border::VERTICAL), Coord(0, y));
-        // right
-        map.add(Border(Border::VERTICAL), Coord(size_x-1, y));
-    }
-    
-    // put Food at a random position
-    auto rand = Random();
-    map.add(Food(), rand.get_coord(1, size_x-1, 1, size_y-1));
-
-    // Make a copy of the original map for snake rendering
-    Map smap = map;
-
-
-
-    // empty map rendering
-    std::cout << smap.render();
 
     // Initialize Snake with direction LEFT and render
     // TODO: Later define a Direction class, which inherits from Coord?
@@ -123,7 +95,7 @@ int main()
                   << std::endl;
     }
     std::cout << smap.render();
-
+*/
 
     return 0;
 }

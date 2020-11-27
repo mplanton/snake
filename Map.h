@@ -15,6 +15,7 @@ class Map
 public:
     // Constructor
     Map(int size_x, int size_y);
+    Map(Coord size);
 
     // Render the map to a string
     std::string render();
@@ -27,10 +28,13 @@ public:
     // Return the removed thing.
     Thing remove(Coord position);
 
+    // Get a reference to the Thing at the position
+    Thing &get(Coord position);
+
     int get_size_x() { return _size_x; }
     int get_size_y() { return _size_y; }
     Coord get_size() { return Coord(_size_x, _size_y); }
-    int get_num_things() { return _things.size(); }
+    int get_num_things() { return _things.size(); } //TODO: remove this
 };
 
 #endif // MAP_H

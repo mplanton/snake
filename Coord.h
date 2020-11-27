@@ -32,6 +32,20 @@ public:
         return sum;
     }
 
+    bool operator==(const Coord& b)
+    {
+        return (this->_x == b._x) && (this->_y == b._y);
+    }
+
+    // unary minus operator overloading
+    Coord operator-() const
+    {
+       Coord c;
+       c._x = -_x;
+       c._y = -_y;
+       return c;
+    }
+
     friend std::ostream& operator<<(std::ostream &strm, const Coord &a);
 };
 

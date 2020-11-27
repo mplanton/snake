@@ -2,11 +2,14 @@
 
 all: main
 
-main: main.o Coord.o Thing.o Random.o Map.o Snake.o
-	g++ -g -Wall -o main main.o Coord.o Thing.o Random.o Map.o Snake.o
+main: main.o Coord.o Thing.o Random.o Map.o Snake.o Game.o
+	g++ -g -Wall -o main main.o Coord.o Thing.o Random.o Map.o Snake.o Game.o
 
-main.o: main.cpp Coord.h Thing.h Random.h Map.h Food.h Border.h Body.h Snake.h
+main.o: main.cpp Coord.h Thing.h Random.h Map.h Food.h Border.h Body.h Snake.h Game.h
 	g++ -g -Wall -c main.cpp
+
+Game.o: Game.cpp Game.h
+	g++ -g -Wall -c Game.cpp
 
 Coord.o: Coord.cpp Coord.h
 	g++ -g -Wall -c Coord.cpp

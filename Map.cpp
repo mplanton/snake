@@ -25,6 +25,9 @@ Map::Map(int size_x, int size_y) : _size_x{size_x}, _size_y{size_y}
     }
 }
 
+Map::Map(Coord size) : Map(size.get_x(), size.get_y())
+{}
+
 std::string Map::render()
 {
     std::string str;
@@ -83,3 +86,7 @@ Thing Map::remove(Coord position)
     return thing;
 }
 
+Thing &Map::get(Coord position)
+{
+    return _things[position.get_y()][position.get_x()];
+}

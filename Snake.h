@@ -37,6 +37,10 @@ public:
     //
     Coord getHeadCoord();
 
+    // Get direction of head
+    //
+    Coord getHeadDir();
+
     // Print the coordinates of the whole snake
     //
     void printCoords();
@@ -45,6 +49,8 @@ public:
     //
     std::vector<Body>& getBody();
 
+    // Grow one part at the tail.
+    //
     void grow();
 };
 

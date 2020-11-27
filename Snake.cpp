@@ -37,6 +37,11 @@ void Snake::changeDirection(Coord direction)
 
 Coord Snake::getHeadCoord()
 {
+    return _tail[0].get_pos();
+}
+
+Coord Snake::getHeadDir()
+{
     return _tail[0].get_dir();
 }
 
