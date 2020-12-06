@@ -22,18 +22,22 @@ int main()
                 quit = true;
                 break;
             case 'a':
+            case KEY_LEFT:
                 // left
                 game.direct(Coord(-1, 0));
                 break;
             case 'd':
+            case KEY_RIGHT:
                 // right
                 game.direct(Coord(1, 0));
                 break;
             case 'w':
+            case KEY_UP:
                 // up
                 game.direct(Coord(0, -1));
                 break;
             case 's':
+            case KEY_DOWN:
                 // down
                 game.direct(Coord(0, 1));
                 break;
