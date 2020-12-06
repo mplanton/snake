@@ -3,7 +3,7 @@
 all: main
 
 main: main.o Coord.o Thing.o Random.o Map.o Snake.o Game.o
-	g++ -g -Wall -o main main.o Coord.o Thing.o Random.o Map.o Snake.o Game.o
+	g++ -g -Wall -o main main.o Coord.o Thing.o Random.o Map.o Snake.o Game.o -lncurses
 
 main.o: main.cpp Coord.h Thing.h Random.h Map.h Food.h Border.h Body.h Snake.h Game.h
 	g++ -g -Wall -c main.cpp

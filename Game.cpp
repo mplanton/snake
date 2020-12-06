@@ -3,6 +3,9 @@
 #include "Game.h"
 #include "Border.h"
 #include "Food.h"
+#include <string>
+#include "ncurses.h"
+#include "unistd.h"
 
 /*
  * Thing subclasses for Map and Snake classes
@@ -15,10 +18,8 @@
 */
 
 Game::Game(Coord map_size, Coord snake_position, Coord snake_direction) :
-    _rand(), _map(map_size), _snake(snake_position, snake_direction)
+    _rand(), _map(map_size), _snake(snake_position, snake_direction), _tick{0}
 {
-    // TODO: check map and snake parameters!!!
-
     // build basic map
 
     // corners
@@ -46,7 +47,15 @@ Game::Game(Coord map_size, Coord snake_position, Coord snake_direction) :
         _map.add(Border(Border::VERTICAL), Coord(_map.get_size_x()-1, y));
     }
 
-    // TODO: put food at random position? or later? Do this in main?
+    // initialize the screen
+    _main_wnd = initscr();
+    cbreak();
+    noecho();
+    nodelay(_main_wnd, TRUE);
+    curs_set(0);
+    //start_color();
+    keypad(_main_wnd, true);
+    
 }
 
 void Game::putFood()
@@ -101,6 +110,26 @@ void Game::direct(Coord direction)
     _snake.changeDirection(direction);
 }
 
+void Game::_printGameOver()
+{
+    wattron(_main_wnd, A_BOLD);
+
+    std::string msg = "GAME OVER";
+    int y = _map.get_size_y() / 2;
+    int x = _map.get_size_x() / 2 - msg.length() / 2;
+    mvwprintw(_main_wnd, y, x, msg.c_str());
+
+    msg = "q: quit";
+    x = _map.get_size_x() / 2 - msg.length() / 2;
+    mvwprintw(_main_wnd, y+1, x, msg.c_str());
+
+    msg = "SPACE: quit";
+    x = _map.get_size_x() / 2 - msg.length() / 2;
+    mvwprintw(_main_wnd, y+2, x, msg.c_str());
+
+    wattroff(_main_wnd, A_BOLD);
+}
+
 bool Game::tick()
 {
     _snake.move();
@@ -126,7 +155,8 @@ bool Game::tick()
 #if DEBUG
         std::cout << "wall collision" << std::endl;
 #endif
-        return false;
+        _printGameOver();
+        return true;
     }
 
     // Make a copy of the original map for snake rendering
@@ -149,18 +179,30 @@ bool Game::tick()
 #if DEBUG
             std::cout << "self collision" << std::endl;
 #endif
-            return false;
+            _printGameOver();
+            return true;
         }
-        bool flag = smap.add(part, p_pos);
 #if DEBUG
+        bool flag = smap.add(part, p_pos);
         std::cout << "DBG: Game::tick(): smap.add was: " << flag << std::endl;
         std::cout << "DBG:  Game::tick():part: " << part.get_char() << part.get_pos()
                   << std::endl;
+#else
+        smap.add(part, p_pos);
 #endif
     }
-    std::cout << smap.render();
 
-    // TODO: ?? wait for the rest of the frame ??
+    // draw map
+    mvwprintw(_main_wnd, 0, 0, smap.render().c_str());
 
-    return true;
+    // frame duration
+    usleep(150000);
+
+    // put food at random time
+    if((_tick % 15) == 0)
+        putFood();
+
+    _tick++;
+    
+    return false;
 }

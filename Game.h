@@ -7,14 +7,17 @@
 #include "Snake.h"
 #include "Coord.h"
 #include "Random.h"
+#include "ncurses.h"
 
-#define DEBUG 1
+#define DEBUG 0
 
 class Game
 {
     Random _rand;
     Map _map;
     Snake _snake;
+    WINDOW* _main_wnd;
+    unsigned int _tick;
 
 public:
 
@@ -25,6 +28,15 @@ public:
     // snake_direction.
     //
     Game(Coord map_size, Coord snake_position, Coord snake_direction);
+
+    // Destructor
+    //
+    ~Game()
+    {
+        // close and clean up ncurses
+        delwin(_main_wnd);
+        endwin();
+    }
 
     // Put the Food method
     //
@@ -44,10 +56,12 @@ public:
     // Game loop method
     //
     // Compute one tick - a single step - of the game progress.
-    // Return true, if the snake is moving freely.
-    // Return false, if the snake collided.
+    // Return true, if the snake collided.
+    // Return false, if the snake is moving freely.
     //
     bool tick();
+
+    void _printGameOver();
 };
 
 #endif // GAME_H
